@@ -7,12 +7,14 @@ export class Service {
     bucket;
 
     constructor() {
-        this.client.setEndpoint(conf.appwriteUrl).setProject(conf.appwriteProjectId);
+        this.client
+            .setEndpoint(conf.appwriteUrl)
+            .setProject(conf.appwriteProjectId);
+
         this.databases = new Databases(this.client);
         this.bucket = new Storage(this.client);
     }
 
-    // Posts
     async createPost({ title, slug, content, featuredImage, status, userId }) {
         try {
             return await this.databases.createDocument(
@@ -21,9 +23,8 @@ export class Service {
                 slug,
                 { title, content, featuredImage, status, userId }
             );
-        } catch (error) {
-            console.log("Error creating post:", error.message || error);
-            return false;
+        } catch {
+            return null;
         }
     }
 
@@ -35,9 +36,8 @@ export class Service {
                 slug,
                 { title, content, featuredImage, status }
             );
-        } catch (error) {
-            console.log("Error updating post:", error.message || error);
-            return false;
+        } catch {
+            return null;
         }
     }
 
@@ -49,8 +49,7 @@ export class Service {
                 slug
             );
             return true;
-        } catch (error) {
-            console.log("Error deleting post:", error.message || error);
+        } catch {
             return false;
         }
     }
@@ -62,8 +61,7 @@ export class Service {
                 conf.appwriteCollectionId,
                 slug
             );
-        } catch (error) {
-            console.log("Error fetching post by slug:", error.message || error);
+        } catch {
             return null;
         }
     }
@@ -75,44 +73,38 @@ export class Service {
                 conf.appwriteCollectionId,
                 queries
             );
-        } catch (error) {
-            console.error(
-                "Error fetching posts. Check your database and collection IDs:",
-                conf.appwriteDataBaseId,
-                conf.appwriteCollectionId,
-                error.message || error
-            );
-            return { total: 0, documents: [] }; // safe fallback
+        } catch {
+            return { total: 0, documents: [] };
         }
     }
 
-    // File upload
     async uploadFile(file) {
         try {
-            return await this.bucket.createFile(conf.appwriteBucketId, ID.unique(), file);
-        } catch (error) {
-            console.error("Error uploading file:", error.message || error);
+            return await this.bucket.createFile(
+                conf.appwriteBucketId,
+                ID.unique(),
+                file
+            );
+        } catch {
             return null;
         }
     }
 
     async deleteFile(fileId) {
         try {
-            return await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
-        } catch (error) {
-            console.log("Error deleting file:", error.message || error);
+            await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
+            return true;
+        } catch {
             return false;
         }
     }
 
     getFilePreview(fileId) {
-        try {
-            return this.bucket.getFilePreview(conf.appwriteBucketId, fileId);
-        } catch (error) {
-            console.log("Error fetching file preview:", error.message || error);
-            return null;
-        }
+        if (!fileId) return "";
+        return this.bucket
+            .getFileView(conf.appwriteBucketId, fileId)
     }
+
 }
 
 const service = new Service();
