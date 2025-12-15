@@ -8,59 +8,85 @@ import { useSelector } from "react-redux";
 
 export default function Post() {
   const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const { slug } = useParams();
   const navigate = useNavigate();
-
   const userData = useSelector((state) => state.auth.userData);
 
-  const isAuthor = post && userData ? post.userId === userData.$id : false;
+  const isAuthor = post && userData && post.userId === userData.$id;
 
   useEffect(() => {
-    if (slug) {
-      appwriteService.getPost(slug).then((post) => {
-        if (post) setPost(post);
-        else navigate("/");
-      });
-    } else navigate("/");
-  }, [slug, navigate]);
+    if (!slug) {
+      navigate("/");
+      return;
+    }
 
-  const deletePost = () => {
-    appwriteService.deletePost(post.$id).then((status) => {
-      if (status) {
-        appwriteService.deleteFile(post.featuredImage);
+    appwriteService.getPost(slug).then((response) => {
+      if (response) {
+        setPost(response);
+      } else {
         navigate("/");
       }
+      setLoading(false);
     });
+  }, [slug, navigate]);
+
+  const deletePost = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
+    if (!confirmed) return;
+
+    const status = await appwriteService.deletePost(post.$id);
+    if (status) {
+      if (post.featuredImage) {
+        await appwriteService.deleteFile(post.featuredImage);
+      }
+      navigate("/");
+    }
   };
 
-  return post ? (
-    <div className="py-8">
-      <Container>
-        <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
-          <img
-            src={appwriteService.getFilePreview(post.featuredImage)}
-            alt={post.title}
-            className="rounded-xl"
-          />
+  if (loading) {
+    return (
+      <div className="py-10 text-center text-sm text-gray-400">
+        Loading post...
+      </div>
+    );
+  }
 
-          {isAuthor && (
-            <div className="absolute right-6 top-6">
-              <Link to={`/edit-post/${post.$id}`}>
-                <Button bgColor="bg-green-500" className="mr-3">
-                  Edit
+  if (!post) return null;
+
+  return (
+    <section className="py-10">
+      <Container>
+        {post.featuredImage && (
+          <div className="relative mb-8 overflow-hidden rounded-xl border border-[#2a2a2f]">
+            <img
+              src={appwriteService.getFilePreview(post.featuredImage)}
+              alt={post.title}
+              className="w-full max-h-[420px] object-cover"
+            />
+
+            {isAuthor && (
+              <div className="absolute right-4 top-4 flex gap-2">
+                <Link to={`/edit-post/${post.$id}`}>
+                  <Button variant="ghost">Edit</Button>
+                </Link>
+                <Button variant="ghost" onClick={deletePost}>
+                  Delete
                 </Button>
-              </Link>
-              <Button bgColor="bg-red-500" onClick={deletePost}>
-                Delete
-              </Button>
-            </div>
-          )}
-        </div>
-        <div className="w-full mb-6">
-          <h1 className="text-2xl font-bold">{post.title}</h1>
-        </div>
-        <div className="browser-css">{parse(post.content)}</div>
+              </div>
+            )}
+          </div>
+        )}
+        <h1 className="mb-6 text-3xl font-semibold text-gray-200">
+          {post.title}
+        </h1>
+        <article className="prose prose-invert max-w-none prose-p:text-gray-300 prose-headings:text-gray-200">
+          {parse(post.content)}
+        </article>
       </Container>
-    </div>
-  ) : null;
+    </section>
+  );
 }

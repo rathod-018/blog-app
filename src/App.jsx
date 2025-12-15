@@ -15,7 +15,7 @@ function App() {
       .getCurrentUser()
       .then((userData) => {
         if (userData) {
-          dispatch(logIn({ userData }));
+          dispatch(logIn(userData));
         } else {
           dispatch(logOut());
         }
@@ -23,19 +23,20 @@ function App() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [dispatch]);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
-        <p className="animate-pulse">Loading...</p>
+      <div className="min-h-screen flex items-center justify-center bg-[#0e0e11] text-gray-400">
+        <p className="animate-pulse text-sm">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-900 text-slate-200">
+    <div className="min-h-screen flex flex-col bg-[#0e0e11] text-gray-200">
       <Header />
+
       <main className="flex-grow w-full">
         <Outlet />
       </main>

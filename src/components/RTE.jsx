@@ -10,7 +10,12 @@ export default function RTE({
 }) {
   return (
     <div className="w-full">
-      {label && <label className="inline-block mb-1 pl-1">{label}</label>}
+      {label && (
+        <label className="mb-2 inline-block pl-1 text-sm text-gray-400">
+          {label}
+        </label>
+      )}
+
       <Controller
         name={name}
         control={control}
@@ -18,35 +23,37 @@ export default function RTE({
         render={({ field: { onChange, value } }) => (
           <Editor
             apiKey="1htihwzixn613akni0yqga0siqku48tbzhf4a2efsfofojvn"
-            value={value} // controlled by React Hook Form
+            value={value}
             onEditorChange={onChange}
             init={{
+              height: 420,
               branding: false,
-              height: 500,
-              menubar: true,
+              menubar: false,
+              skin: "oxide-dark",
+              content_css: "dark",
+
               plugins: [
-                "advlist",
-                "autolink",
                 "lists",
                 "link",
                 "image",
-                "charmap",
-                "preview",
-                "anchor",
-                "searchreplace",
-                "visualblocks",
                 "code",
                 "fullscreen",
-                "insertdatetime",
-                "media",
-                "table",
-                "help",
+                "preview",
                 "wordcount",
               ],
+
               toolbar:
-                "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
-              content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                "undo redo | blocks | bold italic underline | forecolor | alignleft aligncenter alignright | bullist numlist | link image | code fullscreen",
+
+              content_style: `
+                body {
+                  background-color: #0e0e11;
+                  color: #e5e7eb;
+                  font-family: Inter, system-ui, sans-serif;
+                  font-size: 15px;
+                  line-height: 1.7;
+                }
+              `,
             }}
           />
         )}

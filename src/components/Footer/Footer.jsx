@@ -4,131 +4,64 @@ import Logo from "../Logo";
 
 function Footer() {
   return (
-    <section className="relative overflow-hidden py-10 bg-gray-400 border border-t-2 border-t-black">
-      <div className="relative z-10 mx-auto max-w-7xl px-4">
-        <div className="-m-6 flex flex-wrap">
-          <div className="w-full p-6 md:w-1/2 lg:w-5/12">
-            <div className="flex h-full flex-col justify-between">
-              <div className="mb-4 inline-flex items-center">
-                <Logo width="100px" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">
-                  &copy; Copyright 2023. All Rights Reserved by DevUI.
-                </p>
-              </div>
+    <footer className="bg-[#0e0e11] border-t border-[#2a2a2f]">
+      <div className="mx-auto max-w-7xl px-4 py-12">
+        <div className="flex flex-col gap-10 md:flex-row md:justify-between">
+          <div>
+            <div className="mb-4 flex items-center">
+              <Logo width="90px" />
             </div>
+            <p className="text-sm text-gray-400 max-w-xs">
+              A modern blogging platform to share ideas, stories, and knowledge.
+            </p>
+            <p className="mt-4 text-xs text-gray-500">
+              © {new Date().getFullYear()} All rights reserved.
+            </p>
           </div>
-          <div className="w-full p-6 md:w-1/2 lg:w-2/12">
-            <div className="h-full">
-              <h3 className="tracking-px mb-9  text-xs font-semibold uppercase text-gray-500">
-                Company
-              </h3>
-              <ul>
-                <li className="mb-4">
+          <div className="flex gap-16">
+            <div>
+              <h4 className="mb-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Explore
+              </h4>
+              <ul className="space-y-3">
+                <li>
                   <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
                     to="/"
+                    className="text-sm text-gray-300 hover:text-amber-400"
                   >
-                    Features
-                  </Link>
-                </li>
-                <li className="mb-4">
-                  <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
-                  >
-                    Pricing
-                  </Link>
-                </li>
-                <li className="mb-4">
-                  <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
-                  >
-                    Affiliate Program
+                    Blogs
                   </Link>
                 </li>
                 <li>
                   <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
+                    to="/write"
+                    className="text-sm text-gray-300 hover:text-amber-400"
                   >
-                    Press Kit
+                    Write
                   </Link>
                 </li>
+               
               </ul>
             </div>
-          </div>
-          <div className="w-full p-6 md:w-1/2 lg:w-2/12">
-            <div className="h-full">
-              <h3 className="tracking-px mb-9  text-xs font-semibold uppercase text-gray-500">
-                Support
-              </h3>
-              <ul>
-                <li className="mb-4">
-                  <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
-                  >
-                    Account
-                  </Link>
-                </li>
-                <li className="mb-4">
-                  <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
-                  >
-                    Help
-                  </Link>
-                </li>
-                <li className="mb-4">
-                  <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
-                  >
-                    Contact Us
-                  </Link>
-                </li>
+            <div>
+              <h4 className="mb-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Legal
+              </h4>
+              <ul className="space-y-3">
                 <li>
                   <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
-                  >
-                    Customer Support
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="w-full p-6 md:w-1/2 lg:w-3/12">
-            <div className="h-full">
-              <h3 className="tracking-px mb-9  text-xs font-semibold uppercase text-gray-500">
-                Legals
-              </h3>
-              <ul>
-                <li className="mb-4">
-                  <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
-                  >
-                    Terms &amp; Conditions
-                  </Link>
-                </li>
-                <li className="mb-4">
-                  <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
+                    to="/privacy"
+                    className="text-sm text-gray-300 hover:text-amber-400"
                   >
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
                   <Link
-                    className=" text-base font-medium text-gray-900 hover:text-gray-700"
-                    to="/"
+                    to="/terms"
+                    className="text-sm text-gray-300 hover:text-amber-400"
                   >
-                    Licensing
+                    Terms & Conditions
                   </Link>
                 </li>
               </ul>
@@ -136,7 +69,7 @@ function Footer() {
           </div>
         </div>
       </div>
-    </section>
+    </footer>
   );
 }
 

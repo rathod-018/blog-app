@@ -4,11 +4,17 @@ import PostForm from "../components/post-form/PostForm";
 
 function AddPost() {
   return (
-    <div className="py-8">
+    <section className="py-10">
       <Container>
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-gray-200">
+            Write a new post
+          </h1>
+        </div>
+
         <PostForm />
       </Container>
-    </div>
+    </section>
   );
 }
 
